@@ -1,0 +1,327 @@
+/* ====================== */
+/* Estilos Globais        */
+/* ====================== */
+
+/* Corpo da página */
+body {
+  font-family: 'Roboto', sans-serif; /* Fonte principal */
+  background-color: #f4f4f9; /* Cor de fundo padrão */
+  margin: 0; /* Remove margens padrão */
+  padding: 0; /* Remove paddings padrão */
+  background-image: url('https://vocenaneve.com.br/wp-content/uploads/2021/06/hallstat.jpg'); /* Imagem de fundo */
+  background-size: cover; /* Cobrir toda a tela */
+  background-position: center; /* Centralizar a imagem */
+  background-repeat: no-repeat; /* Evitar repetição */
+  background-attachment: fixed; /* Fixar o fundo ao rolar a página */
+  position: relative; /* Para o overlay funcionar */
+}
+
+/* Overlay escuro para melhorar a legibilidade */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6); /* Preto com 60% de transparência */
+  z-index: -1; /* Coloca o overlay atrás do conteúdo */
+}
+
+/* Garantir que o conteúdo fique acima do overlay */
+.main-container, .auth-container, .about-content {
+  position: relative;
+  z-index: 1; /* Coloca o conteúdo na frente do overlay */
+}
+
+/* Estilo dos títulos */
+h1, h2, h3 {
+  color: #333; /* Cor dos títulos */
+}
+
+/* ====================== */
+/* Navbar                 */
+/* ====================== */
+
+/* Estilo da navbar */
+.navbar {
+  padding: 10px 20px; /* Espaçamento interno */
+  margin-bottom: 20px; /* Margem inferior */
+}
+
+/* Estilos para os botões de navegação */
+.nav-button {
+  color: white !important; /* Cor do texto */
+  text-decoration: none !important; /* Remove o sublinhado */
+  margin: 0 10px; /* Espaçamento entre os botões */
+  padding: 8px 16px; /* Espaçamento interno */
+  font-size: 1rem; /* Tamanho da fonte */
+  font-weight: 500; /* Peso da fonte */
+  border-radius: 5px; /* Bordas arredondadas */
+  transition: all 0.3s ease; /* Transição suave */
+}
+
+/* Efeito de hover nos botões */
+.nav-button:hover {
+  background-color: rgba(255, 255, 255, 0.1); /* Fundo levemente branco ao passar o mouse */
+  transform: translateY(-2px); /* Efeito de levantar o botão */
+}
+
+/* Estilo ativo (página atual) */
+.nav-button.active {
+  background-color: rgba(255, 255, 255, 0.2); /* Fundo mais destacado */
+}
+
+/* ====================== */
+/* Container Principal    */
+/* ====================== */
+
+/* Estilo do container principal */
+.main-container {
+  width: 90%; /* Largura do container */
+  max-width: 1200px; /* Largura máxima */
+  margin: 50px auto; /* Centraliza o container */
+  padding: 20px; /* Espaçamento interno */
+  background-color: rgba(255, 255, 255, 0.7); /* Fundo branco com transparência */
+  border-radius: 10px; /* Bordas arredondadas */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* ====================== */
+/* Carrossel de Imagens   */
+/* ====================== */
+
+/* Estilo do carrossel de imagens */
+.image-carousel {
+  display: flex;
+  overflow-x: auto; /* Permite rolagem horizontal */
+  scroll-snap-type: x mandatory; /* Alinha os itens ao rolar */
+  gap: 16px; /* Espaçamento entre os itens */
+  padding: 16px 0; /* Espaçamento interno */
+  cursor: grab; /* Altera o cursor para indicar que é arrastável */
+}
+
+/* Estilo do card de cada imagem */
+.image-card {
+  flex: 0 0 auto; /* Impede que os itens encolham */
+  scroll-snap-align: start; /* Alinha os itens ao rolar */
+  width: 300px; /* Largura do card */
+  border-radius: 8px; /* Bordas arredondadas */
+  overflow: hidden; /* Esconde o conteúdo que ultrapassa */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  display: flex;
+  flex-direction: column; /* Organiza a imagem e a descrição em coluna */
+}
+
+/* Estilo das imagens */
+.imagem-home {
+  width: 100%; /* Largura total */
+  height: 200px; /* Altura fixa */
+  object-fit: cover; /* Cobrir o espaço sem distorcer */
+  border-radius: 8px 8px 0 0; /* Bordas arredondadas apenas no topo */
+}
+
+/* Descrição sobre as imagens */
+.image-description {
+  background: rgba(0, 0, 0, 0.7); /* Fundo escuro com transparência */
+  color: white; /* Cor do texto */
+  padding: 10px; /* Espaçamento interno */
+  text-align: left; /* Alinhamento do texto */
+  flex-grow: 1; /* Faz a descrição ocupar o espaço restante */
+}
+
+.image-description h5 {
+  margin: 0; /* Remove margens padrão */
+  font-size: 1.25rem; /* Tamanho da fonte */
+}
+
+.image-description p {
+  margin: 5px 0 0; /* Margem superior */
+  font-size: 0.875rem; /* Tamanho da fonte */
+}
+
+/* ====================== */
+/* Footer                 */
+/* ====================== */
+
+/* Estilo para o footer fixo */
+footer {
+  position: fixed; /* Fixa o footer na parte inferior */
+  bottom: 0; /* Posiciona na parte inferior da tela */
+  left: 0; /* Alinha à esquerda */
+  width: 100%; /* Faz o footer ocupar toda a largura da tela */
+  background-color: #333; /* Cor de fundo do footer */
+  color: white; /* Cor do texto */
+  text-align: center; /* Alinha o texto no centro */
+  padding: 10px 0; /* Espaçamento no topo e na base */
+  z-index: 1000; /* Garantir que o footer fique acima do conteúdo */
+}
+
+/* Espaço no fundo da página para não cobrir o conteúdo */
+body {
+  margin-bottom: 60px;
+}
+
+/* ====================== */
+/* Formulário de Autenticação */
+/* ====================== */
+
+/* Container do formulário de autenticação */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh; /* Altura do container */
+  padding: 20px; /* Espaçamento interno */
+}
+
+/* Estilo do formulário de autenticação */
+.auth-form {
+  background: white; /* Fundo branco */
+  padding: 2rem; /* Espaçamento interno */
+  border-radius: 10px; /* Bordas arredondadas */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  width: 100%; /* Largura total */
+  max-width: 400px; /* Largura máxima */
+  margin: 0 auto; /* Centraliza o formulário */
+}
+
+.auth-form h2 {
+  margin-bottom: 1.5rem; /* Margem inferior */
+  text-align: center; /* Alinhamento do texto */
+  color: #333; /* Cor do texto */
+}
+
+/* Estilo dos grupos de formulário */
+.form-group {
+  margin-bottom: 1rem; /* Margem inferior */
+}
+
+.form-group label {
+  display: block; /* Faz o label ocupar a linha inteira */
+  margin-bottom: 0.5rem; /* Margem inferior */
+  color: #555; /* Cor do texto */
+}
+
+.form-group input {
+  width: 100%; /* Largura total */
+  padding: 0.75rem; /* Espaçamento interno */
+  border: 1px solid #ddd; /* Borda */
+  border-radius: 5px; /* Bordas arredondadas */
+  font-size: 1rem; /* Tamanho da fonte */
+}
+
+/* Estilo do botão de autenticação */
+.auth-button {
+  width: 100%; /* Largura total */
+  padding: 0.75rem; /* Espaçamento interno */
+  background-color: #007bff; /* Cor do botão */
+  color: white; /* Cor do texto */
+  border: none; /* Remove a borda */
+  border-radius: 5px; /* Bordas arredondadas */
+  font-size: 1rem; /* Tamanho da fonte */
+  cursor: pointer; /* Altera o cursor */
+  transition: background-color 0.3s ease; /* Transição suave */
+}
+
+.auth-button:hover {
+  background-color: #0056b3; /* Cor do botão ao passar o mouse */
+}
+
+/* Estilo do link para alternar entre login e registro */
+.toggle-form {
+  text-align: center; /* Alinhamento do texto */
+  margin-top: 1rem; /* Margem superior */
+  color: #555; /* Cor do texto */
+}
+
+.toggle-link {
+  color: #007bff; /* Cor do link */
+  cursor: pointer; /* Altera o cursor */
+  text-decoration: underline; /* Sublinhado */
+}
+
+.toggle-link:hover {
+  color: #0056b3; /* Cor do link ao passar o mouse */
+}
+
+/* ====================== */
+/* Página "Sobre"         */
+/* ====================== */
+
+/* Estilo do conteúdo da página "Sobre" */
+.about-content {
+  background: white; /* Fundo branco */
+  padding: 2rem; /* Espaçamento interno */
+  border-radius: 10px; /* Bordas arredondadas */
+  background-color: rgba(250, 250, 250, 0.9);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  max-width: 800px; /* Largura máxima */
+  margin: 0 auto; /* Centraliza o conteúdo */
+}
+
+.about-content h1 {
+  color: #333; /* Cor do título */
+  margin-bottom: 1.5rem; /* Margem inferior */
+}
+
+.about-content h2 {
+  color: #007bff; /* Cor do subtítulo */
+  margin-top: 2rem; /* Margem superior */
+  margin-bottom: 1rem; /* Margem inferior */
+}
+
+.about-content p {
+  color: #555; /* Cor do texto */
+  line-height: 1.6; /* Altura da linha */
+  margin-bottom: 1rem; /* Margem inferior */
+}
+
+.about-content ul {
+  list-style-type: disc; /* Estilo da lista */
+  padding-left: 2rem; /* Espaçamento interno */
+  margin-bottom: 1.5rem; /* Margem inferior */
+}
+
+.about-content ul li {
+  margin-bottom: 0.5rem; /* Margem inferior */
+  color: #555; /* Cor do texto */
+}
+
+/* Estilo do botão na página "Sobre" */
+.about-content .auth-button {
+  width: 25%;
+  display: inline-block; /* Exibe como bloco */
+  margin-top: 1rem; /* Margem superior */
+  padding: 0.75rem 2rem; /* Espaçamento interno */
+  background-color: #007bff; /* Cor do botão */
+  color: white; /* Cor do texto */
+  border: none; /* Remove a borda */
+  border-radius: 5px; /* Bordas arredondadas */
+  font-size: 1rem; /* Tamanho da fonte */
+  cursor: pointer; /* Altera o cursor */
+  text-decoration: none; /* Remove o sublinhado */
+  transition: background-color 0.3s ease; /* Transição suave */
+}
+
+.about-content .auth-button:hover {
+  background-color: #0056b3; /* Cor do botão ao passar o mouse */
+}
+
+/* ====================== */
+/* Responsividade         */
+/* ====================== */
+
+@media (max-width: 768px) {
+  .main-container {
+    width: 95%; /* Largura do container em telas menores */
+  }
+
+  .image-card {
+    width: 250px; /* Largura do card em telas menores */
+  }
+
+  .imagem-home {
+    height: 150px; /* Altura da imagem em telas menores */
+  }
+}

@@ -1,0 +1,10 @@
+# Ignorar variáveis de ambiente
+/backend/.env
+
+# Ignorar dependências do Node.js
+/backend/node_modules
+/frontend/node_modules
+
+# Ignorar arquivos gerados pelo sistema operacional
+.DS_Store
+Thumbs.db
