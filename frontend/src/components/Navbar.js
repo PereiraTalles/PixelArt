@@ -1,18 +1,18 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom'; // Importe useLocation
+import { Link, useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import logo from '../assets/default_transparent_1000x1000.png';
 import '../index.css';
 
 const Navbar = () => {
-  const location = useLocation(); // Obtém a localização atual
+  const location = useLocation();
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid d-flex justify-content-between align-items-center">
         {/* Logo à esquerda */}
         <Link className="navbar-brand" to="/">
-        <img src={logo} alt="Logo" width="70" height="70" style={{ borderRadius: '20%' }}  // Adiciona a borda arredondada
+        <img src={logo} alt="Logo" width="70" height="70" style={{ borderRadius: '20%' }}
 />
         </Link>
 
@@ -39,7 +39,7 @@ const Navbar = () => {
           </Link>
           <Link
             className={`nav-button ${location.pathname === '/about' ? 'active' : ''}`}
-            to="/about" // Alterado para "/about"
+            to="/about"
           >
             About
           </Link>

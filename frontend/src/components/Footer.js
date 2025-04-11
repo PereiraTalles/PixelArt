@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaWhatsapp, FaInstagram } from 'react-icons/fa'; // Para os ícones do WhatsApp e Instagram
+import { FaWhatsapp, FaInstagram } from 'react-icons/fa';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Footer = () => {

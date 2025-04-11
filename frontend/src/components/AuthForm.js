@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
 const AuthForm = () => {
-  const [isLogin, setIsLogin] = useState(true); // Controla se é login ou registro
+  const [isLogin, setIsLogin] = useState(true);
 
   const toggleForm = () => {
-    setIsLogin(!isLogin); // Alterna entre login e registro
+    setIsLogin(!isLogin);
   };
 
   return (

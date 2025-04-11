@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../index.css';
-import ImageCard from '../components/ImageCard'; // Importando o componente ImageCard
+import ImageCard from '../components/ImageCard';
 import imagem1 from '../assets/Cataratas_do_Iguaçu.png';
 import imagem2 from '../assets/Barcelona.jpg';
 import imagem3 from '../assets/Banff.jpg';
@@ -27,13 +27,11 @@ const HomePage = () => {
     if (!carousel) return;
 
     const rect = carousel.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left; // Posição do mouse no eixo X dentro do carrossel
+    const mouseX = e.clientX - rect.left;
     const carouselWidth = rect.width;
 
-    // Calcula a porcentagem da posição do mouse em relação à largura do carrossel
     const scrollPercentage = (mouseX / carouselWidth) * 100;
 
-    // Ajusta a rolagem com base na posição do mouse
     const scrollPosition = (scrollPercentage / 100) * carousel.scrollWidth;
     carousel.scrollTo({ left: scrollPosition, behavior: 'smooth' });
   };
