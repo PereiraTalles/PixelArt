@@ -1,23 +1,50 @@
-// Importa o Multer, que é um middleware para lidar com uploads de arquivos
 const multer = require('multer');
-
-// Importa o SDK do Cloudinary (versão 2)
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const cloudinary = require('cloudinary').v2;
 
-// Importa o CloudinaryStorage, que é uma integração do Multer com o Cloudinary
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
-
-// Configuração do Multer com Cloudinary
 const storage = new CloudinaryStorage({
-  cloudinary: cloudinary, // Passa a instância configurada do Cloudinary
-  params: {
-    folder: 'galeriabrasil', // Define a pasta no Cloudinary onde as imagens serão armazenadas
-    allowed_formats: ['jpg', 'jpeg', 'png'], // Define os formatos de imagem permitidos
-  },
+  cloudinary: cloudinary,
+  params: (req, file) => { 
+    return {
+      folder: 'galeriabrasil',
+      allowed_formats: ['jpg', 'jpeg', 'png'],
+      resource_type: 'image',
+      public_id: `img-${Date.now()}-${Math.round(Math.random() * 1E9)}`,
+      transformation: [ 
+        { width: 1600, height: 1600, crop: 'limit' }, 
+        { quality: 'auto:good' }
+      ]
+    };
+  }
 });
 
-// Cria uma instância do Multer com a configuração de armazenamento no Cloudinary
-const upload = multer({ storage: storage });
+const fileFilter = (req, file, cb) => {
+  const validFormats = ['image/jpeg', 'image/png'];
+  if (validFormats.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new Error('Apenas arquivos JPEG ou PNG são permitidos!'), false);
+  }
+};
 
-// Exporta o middleware de upload para ser usado em outras partes do projeto
-module.exports = upload;
+const upload = multer({
+  storage,
+  fileFilter, 
+  limits: {   
+    fileSize: 5 * 1024 * 1024 
+  }
+});
+
+const handleUploadErrors = (err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    return res.status(400).json({ error: err.message });
+  } else if (err) {
+    return res.status(500).json({ error: err.message });
+  }
+  next();
+};
+
+module.exports = {
+  upload,           
+  handleUploadErrors 
+};

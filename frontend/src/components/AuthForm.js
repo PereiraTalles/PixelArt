@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Para redirecionar
+import { useNavigate } from 'react-router-dom';
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -8,7 +8,7 @@ const AuthForm = () => {
     email: '',
     password: ''
   });
-  const [error, setError] = useState(''); // Para mensagens de erro
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -20,17 +20,21 @@ const AuthForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(''); // Reseta erros
+    setError('');
 
     try {
-      const endpoint = isLogin ? '/api/login' : '/api/register';
+      const baseUrl = 'http://localhost:5000'; 
+      const endpoint = isLogin ? '/api/users/login' : '/api/users/register';
+      const url = baseUrl + endpoint;
       const body = isLogin 
         ? { email: formData.email, password: formData.password }
-        : formData; // Envia nome + email + senha para registro
-
-      const response = await fetch(endpoint, {
+        : formData;
+      const response = await fetch(url, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include', 
         body: JSON.stringify(body)
       });
 
@@ -39,12 +43,16 @@ const AuthForm = () => {
       if (!response.ok) {
         throw new Error(data.message || 'Erro na autenticação');
       }
+      if (!data.token) {
+        throw new Error('Token não recebido do servidor');
+      }
 
-      // Se chegou aqui, deu certo!
       localStorage.setItem('token', data.token);
-      navigate('/'); // Redireciona para home
+      navigate('/album');
+      
     } catch (err) {
-      setError(err.message || 'Ocorreu um erro. Tente novamente.');
+      console.error('Erro:', err);
+      setError(err.message || 'Erro ao conectar com o servidor');
     }
   };
 

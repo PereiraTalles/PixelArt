@@ -1,87 +1,126 @@
-// Importa o modelo User, que contém as operações de banco de dados para usuários
 const User = require('../models/User');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
-// Define o controlador de usuários
 const userController = {
-  // Registrar um novo usuário
   register: async (req, res) => {
-    const { name, email, password } = req.body; // Extrai os dados do corpo da requisição
+    const { name, email, password } = req.body;
     try {
-      // Cria um novo usuário no banco de dados
       const user = await User.create(name, email, password);
-      // Retorna o usuário criado com status 201 (Created)
-      res.status(201).json(user);
+      
+      const token = jwt.sign(
+        { userId: user.id, email: user.email },
+        process.env.JWT_SECRET || 'fallback_secret_key',
+        { expiresIn: '1h' }
+      );
+
+      res.status(201).json({
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email
+          // Não inclua a senha!
+        },
+        token
+      });
     } catch (error) {
-      // Se houver erro, retorna uma mensagem de erro com status 500 (Internal Server Error)
-      res.status(500).json({ message: 'Erro ao registrar usuário', error });
+      if (error.message.includes('duplicate')) {
+        return res.status(400).json({ message: 'E-mail já cadastrado' });
+      }
+      res.status(500).json({ 
+        message: 'Erro ao registrar usuário',
+        error: process.env.NODE_ENV === 'development' ? error : undefined
+      });
     }
   },
 
-  // Fazer login
   login: async (req, res) => {
-    const { email, password } = req.body; // Extrai os dados do corpo da requisição
+    const { email, password } = req.body;
     try {
-      // Busca o usuário pelo e-mail
       const user = await User.findByEmail(email);
-      // Verifica se o usuário existe e se a senha está correta
+      
       if (!user || user.password !== password) {
-        return res.status(401).json({ message: 'E-mail ou senha incorretos' }); // Retorna erro 401 (Unauthorized)
+        return res.status(401).json({ message: 'Credenciais inválidas' });
       }
-      // Retorna o usuário com status 200 (OK)
-      res.status(200).json(user);
+
+      const token = jwt.sign(
+        { userId: user.id, email: user.email },
+        process.env.JWT_SECRET || 'fallback_secret_key',
+        { expiresIn: '1h' }
+      );
+
+      res.status(200).json({
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email
+        },
+        token
+      });
     } catch (error) {
-      // Se houver erro, retorna uma mensagem de erro com status 500 (Internal Server Error)
-      res.status(500).json({ message: 'Erro ao fazer login', error });
+      res.status(500).json({ 
+        message: 'Erro no servidor ao fazer login',
+        error: process.env.NODE_ENV === 'development' ? error : undefined
+      });
     }
   },
 
-  // Buscar um usuário pelo ID
   getUserById: async (req, res) => {
-    const { id } = req.params; // Extrai o ID dos parâmetros da requisição
+    const { id } = req.params;
     try {
-      // Busca o usuário pelo ID
       const user = await User.findById(id);
-      // Verifica se o usuário foi encontrado
       if (!user) {
-        return res.status(404).json({ message: 'Usuário não encontrado' }); // Retorna erro 404 (Not Found)
+        return res.status(404).json({ message: 'Usuário não encontrado' });
       }
-      // Retorna o usuário com status 200 (OK)
-      res.status(200).json(user);
+      
+      const { password, ...safeUser } = user;
+      res.status(200).json(safeUser);
     } catch (error) {
-      // Se houver erro, retorna uma mensagem de erro com status 500 (Internal Server Error)
-      res.status(500).json({ message: 'Erro ao buscar usuário', error });
+      res.status(500).json({ 
+        message: 'Erro ao buscar usuário',
+        error: process.env.NODE_ENV === 'development' ? error : undefined
+      });
     }
   },
 
-  // Atualizar um usuário
   updateUser: async (req, res) => {
-    const { id } = req.params; // Extrai o ID dos parâmetros da requisição
-    const { name, email } = req.body; // Extrai os dados do corpo da requisição
+    const { id } = req.params;
+    const { name, email } = req.body;
     try {
-      // Atualiza o usuário no banco de dados
+      if (req.user.userId !== id) {
+        return res.status(403).json({ message: 'Acesso não autorizado' });
+      }
+
       const updatedUser = await User.update(id, name, email);
-      // Retorna o usuário atualizado com status 200 (OK)
-      res.status(200).json(updatedUser);
+      res.status(200).json({
+        id: updatedUser.id,
+        name: updatedUser.name,
+        email: updatedUser.email
+      });
     } catch (error) {
-      // Se houver erro, retorna uma mensagem de erro com status 500 (Internal Server Error)
-      res.status(500).json({ message: 'Erro ao atualizar usuário', error });
+      res.status(500).json({ 
+        message: 'Erro ao atualizar usuário',
+        error: process.env.NODE_ENV === 'development' ? error : undefined
+      });
     }
   },
 
-  // Excluir um usuário
   deleteUser: async (req, res) => {
-    const { id } = req.params; // Extrai o ID dos parâmetros da requisição
+    const { id } = req.params;
     try {
-      // Exclui o usuário do banco de dados
-      const deletedUser = await User.delete(id);
-      // Retorna o usuário excluído com status 200 (OK)
-      res.status(200).json(deletedUser);
+      if (req.user.userId !== id) {
+        return res.status(403).json({ message: 'Acesso não autorizado' });
+      }
+
+      await User.delete(id);
+      res.status(200).json({ message: 'Usuário deletado com sucesso' });
     } catch (error) {
-      // Se houver erro, retorna uma mensagem de erro com status 500 (Internal Server Error)
-      res.status(500).json({ message: 'Erro ao excluir usuário', error });
+      res.status(500).json({ 
+        message: 'Erro ao excluir usuário',
+        error: process.env.NODE_ENV === 'development' ? error : undefined
+      });
     }
-  },
+  }
 };
 
-// Exporta o controlador de usuários para ser usado em outras partes do projeto
 module.exports = userController;
